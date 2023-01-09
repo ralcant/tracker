@@ -17,4 +17,16 @@ defmodule TrackerWeb.Schema do
       resolve(&NotesResolver.all_todos/3)
     end
   end
+
+  mutation do
+    @desc "Create a new todo"
+    field :create_todo, non_null(:todo) do
+      arg :title, non_null(:string)
+      arg :description, non_null(:string)
+      arg :date, non_null(:date)
+      arg :done, non_null(:boolean)
+
+      resolve(&NotesResolver.create_todo/3)
+    end
+  end
 end
