@@ -18,4 +18,11 @@ defmodule TrackerWeb.NotesResolver do
       _error -> {:error, "Couldn't delete todo :("}
     end
   end
+
+  def complete_todo(_root, %{id: id}, _info) do
+    case Notes.complete_todo(id) do
+      {:ok, struct} -> {:ok, struct}
+      _error -> {:error, "Couldn't complete todo :("}
+    end
+  end
 end

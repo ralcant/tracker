@@ -72,7 +72,18 @@ defmodule Tracker.Notes do
     |> Todo.changeset(attrs)
     |> Repo.update()
   end
-
+  @doc """
+  Completes a todo by setting its 'done' attribute
+  to true.
+  """
+  def complete_todo(id) do
+    todo = Repo.get(Todo, id)
+    #TODO: Check if the todo has already been completed
+    case update_todo(todo, %{done: true}) do
+      {:ok, struct} -> {:ok, struct}
+      {:error, changeset} -> {:error, changeset}
+    end
+  end
   @doc """
   Deletes a todo.
 

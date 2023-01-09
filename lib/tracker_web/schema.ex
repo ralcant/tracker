@@ -35,5 +35,11 @@ defmodule TrackerWeb.Schema do
 
       resolve(&NotesResolver.delete_todo/3)
     end
+
+    field :complete_todo, :todo do
+      arg :id, non_null(:id)
+
+      resolve(&NotesResolver.complete_todo/3)
+    end
   end
 end
