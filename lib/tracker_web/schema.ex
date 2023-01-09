@@ -28,5 +28,12 @@ defmodule TrackerWeb.Schema do
 
       resolve(&NotesResolver.create_todo/3)
     end
+
+    @desc "Delete a todo by its id"
+    field :delete_todo, :todo do
+      arg :id, non_null(:id)
+
+      resolve(&NotesResolver.delete_todo/3)
+    end
   end
 end

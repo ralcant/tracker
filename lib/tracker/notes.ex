@@ -89,6 +89,14 @@ defmodule Tracker.Notes do
     Repo.delete(todo)
   end
 
+  def delete_todo_by_id(id) do
+    todo = Repo.get(Todo, id)
+    case Repo.delete(todo) do
+      {:ok, struct} -> {:ok, struct}
+      {:error, changeset} -> {:error, changeset}
+    end
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking todo changes.
 
