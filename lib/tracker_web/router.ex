@@ -20,6 +20,15 @@ defmodule TrackerWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/" do
+    pipe_through :api
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: TrackerWeb.Schema,
+      interface: :simple,
+      context: %{pubsub: TrackerWeb.Endpoint}
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", TrackerWeb do
   #   pipe_through :api
