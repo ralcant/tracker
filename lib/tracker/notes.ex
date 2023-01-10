@@ -8,18 +8,37 @@ defmodule Tracker.Notes do
 
   alias Tracker.Notes.Todo
 
+  # def list_todos() do
+  #   Repo.all(Todo)
+  # end
   @doc """
-  Returns the list of todos.
-
-  ## Examples
-
-      iex> list_todos()
-      [%Todo{}, ...]
-
+  Returns the list of todos with possibly filtering and/or sorting by date
+   For example, args = [{:order, :desc}, {:title, "filtering text"}]
+   The value of "order" should only be :desc or :asc
   """
-  def list_todos do
-    Repo.all(Todo)
+  def list_todos(args) do
+    args
+    |> Enum.reduce(Todo, fn
+      {:order, order}, query -> query |> order_by({^order, :date})
+      {:title, title}, query -> from q in query, where: ilike(q.title, ^"%#{title}%")
+    end)
+    |> Repo.all
   end
+  @doc """
+  filter = list of queries
+  """
+  # def filter_with(query, filter) do
+  #   Enum.reduce(filter, query, fn
+  #      {:title, title}, query -> from q in query, where: ilike(q.title, ^"%#{title}%")
+  #   end)
+  # end
+  # def order_todos(todos, desc) do
+  #   if desc do
+  #     from(p in todos, order_by: p.date)
+  #   else
+
+  #   end
+  # end
 
   @doc """
   Gets a single todo.

@@ -2,6 +2,8 @@ defmodule TrackerWeb.Schema do
   use Absinthe.Schema
   import_types Absinthe.Type.Custom
   alias TrackerWeb.NotesResolver
+  # Absinthe.Type.InputObject
+
 
   object :todo do
     field :id, non_null(:id)
@@ -10,10 +12,20 @@ defmodule TrackerWeb.Schema do
     field :date, non_null(:date)
     field :done, non_null(:boolean)
   end
-
+  #to make sure "order" is a valid value
+  #In graphql this should be input as ASC or DESC (no quotations)
+  enum :filter_order do
+    value :asc
+    value :desc
+  end
+  input_object :todo_filter do
+    field :title, :string
+    field :order, :filter_order
+  end
   query do
     @desc "Get all todos"
     field :all_todos, non_null(list_of(non_null(:todo))) do
+      arg :filters, non_null(:todo_filter)
       resolve(&NotesResolver.all_todos/3)
     end
   end
@@ -35,7 +47,7 @@ defmodule TrackerWeb.Schema do
 
       resolve(&NotesResolver.delete_todo/3)
     end
-
+    @desc "Mark a todo as completed"
     field :complete_todo, :todo do
       arg :id, non_null(:id)
 
